@@ -1,0 +1,49 @@
+resources: https://chat.openai.com/c/b58efbc2-83ef-41ff-895f-62e091b48a61
+
+
+# Get all processes and sort them by CPU usage
+$processesByCPU = Get-Process | Sort-Object -Property CPU -Descending
+Write-Host "Processes sorted by CPU usage:"
+$processesByCPU | Format-Table -AutoSize
+
+# Get all processes and sort them by identification number
+$processesById = Get-Process | Sort-Object -Property Id -Descending
+Write-Host "Processes sorted by Identification Number:"
+$processesById | Format-Table -AutoSize
+
+# Get last 5 processes and sort them by WS(K)
+$processesLast5 = Get-Process | Select-Object -Last 5 | Sort-Object -Property WorkingSet -Descending 
+Write-Host "Last 5 processes sorted by Working Set:"
+$processesLast5 | Format-Table -AutoSize
+
+# Start Chrome with the specified URL
+Start-Process "chrome.exe" -ArgumentList "https://owasp.org/www-project-top-ten/"
+
+# Loop ten times and start Notepad
+for ($i = 1; $i -le 10; $i++) {
+    Start-Process "notepad.exe"
+}
+
+# Wait for user input before closing notepad instances
+Read-Host "Press Enter to close Notepad instances..."
+
+# Get all Notepad processes
+$notepadProcesses = Get-Process -Name "notepad"
+
+# Terminate each Notepad process
+foreach ($process in $notepadProcesses) {
+    $process.CloseMainWindow() | Out-Null
+    $process.WaitForExit()
+}
+
+# Get the Google Chrome process
+$chromeProcess = Get-Process -Name "chrome"
+
+# Check if the process exists
+if ($chromeProcess -ne $null) {
+    # Terminate the Google Chrome process
+    Stop-Process -Id $chromeProcess.Id -Force
+    Write-Host "Google Chrome process terminated successfully."
+} else {
+    Write-Host "Google Chrome process not found."
+}
