@@ -1,0 +1,21 @@
+Resources:  https://chat.openai.com/c/4f19ea01-9d13-4f7e-a812-32a5ece3198d
+
+function Search-IPConfig {
+    param (
+        [string]$reportFile
+    )
+
+    # Search network report for IPv4 addresses
+    $ipv4Addresses = Get-Content -Path $reportFile | Select-String -Pattern "\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b" -AllMatches | ForEach-Object { $_.Matches.Value }
+
+    # Output IPv4 addresses
+    $ipv4Addresses
+
+    # Remove the network report file
+    Remove-Item -Path $reportFile -Force
+    Write-Host "$reportFile removed."
+}
+
+# Example usage:
+# Replace 'path_to_your_report_file' with the actual path to your network report file.
+# For example, Search-IPConfig -reportFile "C:\path_to_your_report_file\network_report.txt"
