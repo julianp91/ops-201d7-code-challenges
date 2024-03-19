@@ -4,6 +4,7 @@
 # Author:                       julian pena
 # Date of latest revision:      03/19/2024
 # Purpose:                      domain analyzer
+# Resources:                    https://chat.openai.com/c/c4464119-d5a8-4f3a-b3ce-67bf0238db09
 
 # Declaration of variables
 output_file="domain_analysis.txt"
