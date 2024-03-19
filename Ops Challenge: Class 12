@@ -1,0 +1,31 @@
+# Enable File and Printer Sharing
+Enable-NetFirewallRule -DisplayGroup "File and Printer Sharing"
+
+# Allow ICMPv4-In Firewall Rule
+Enable-NetFirewallRule -DisplayName "Core Networking - ICMPv4-In"
+
+# Allow ICMPv6-In Firewall Rule
+Enable-NetFirewallRule -DisplayName "Core Networking - ICMPv6-In"
+
+# Enable Remote management
+Enable-PSRemoting -Force
+
+# Remove bloatware
+$packagesToRemove = @(
+    "Bloatware1"
+    # Add more bloatware packages as needed
+)
+
+foreach ($package in $packagesToRemove) {
+    Write-Host "Removing package: $package..."
+    Get-AppxPackage -AllUsers | Where-Object { $_.Name -eq $package } | Remove-AppxPackage -AllUsers -Confirm:$false
+    Write-Host "Removed package: $package."
+}
+
+# Enable Hyper-V
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+
+# Disable SMBv1 Protocol
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" SMB1 -Type DWORD -Value 0 -Force
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" SMB1 -Type DWORD -Value 0 -Force
+
